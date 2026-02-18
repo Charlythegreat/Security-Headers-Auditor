@@ -52,8 +52,9 @@ export const SECURITY_HEADERS = [
     name: 'Content-Security-Policy',
     key: 'content-security-policy',
     severity: 'critical',
-    missingPenalty: 25,
-    misconfiguredPenalty: 15,
+    maxPoints: 30,
+    missingPenalty: 30,
+    misconfiguredPenalty: 20,
     description:
       'Controls which resources the browser is allowed to load for the page, mitigating XSS and data injection attacks.',
     mdnUrl: 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy',
@@ -61,19 +62,41 @@ export const SECURITY_HEADERS = [
     example: "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self';",
     validate(value) {
       const results = [];
+      let partialScore = 1.0;
+
       if (/unsafe-inline/.test(value) && /script-src/.test(value)) {
         results.push(warn("'unsafe-inline' in script-src weakens CSP significantly."));
+        partialScore -= 0.25;
       }
       if (/unsafe-eval/.test(value)) {
         results.push(warn("'unsafe-eval' allows eval() and similar — avoid if possible."));
+        partialScore -= 0.20;
       }
       if (!cspHasDirective(value, 'default-src')) {
         results.push(warn("Missing 'default-src' directive — other directives may not fall back safely."));
+        partialScore -= 0.15;
       }
       if (value.includes('*') && !value.includes('*.')) {
         results.push(err("Wildcard '*' source allows loading resources from any origin."));
+        partialScore -= 0.30;
       }
-      return results.length ? merge(...results) : ok();
+      if (!cspHasDirective(value, 'script-src') && !cspHasDirective(value, 'default-src')) {
+        results.push(warn("Neither 'script-src' nor 'default-src' is defined — scripts are unrestricted."));
+        partialScore -= 0.20;
+      }
+      if (!cspHasDirective(value, 'object-src')) {
+        results.push(warn("Missing 'object-src' — consider adding object-src 'none' to block plugins."));
+        partialScore -= 0.05;
+      }
+      if (!cspHasDirective(value, 'base-uri')) {
+        results.push(warn("Missing 'base-uri' — consider adding base-uri 'self' to prevent base tag injection."));
+        partialScore -= 0.05;
+      }
+
+      partialScore = Math.max(0, partialScore);
+      const merged = results.length ? merge(...results) : ok();
+      merged.partialScore = partialScore;
+      return merged;
     },
   },
 
@@ -82,8 +105,9 @@ export const SECURITY_HEADERS = [
     name: 'Strict-Transport-Security',
     key: 'strict-transport-security',
     severity: 'critical',
+    maxPoints: 20,
     missingPenalty: 20,
-    misconfiguredPenalty: 10,
+    misconfiguredPenalty: 12,
     description:
       'Instructs the browser to only access the site over HTTPS, protecting against protocol downgrade attacks and cookie hijacking.',
     mdnUrl: 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security',
@@ -91,20 +115,32 @@ export const SECURITY_HEADERS = [
     example: 'max-age=63072000; includeSubDomains; preload',
     validate(value) {
       const results = [];
+      let partialScore = 1.0;
       const maxAge = parseMaxAge(value);
+
       if (maxAge === null) {
-        return err('Missing or unparseable max-age directive.');
+        const r = err('Missing or unparseable max-age directive.');
+        r.partialScore = 0.1;
+        return r;
       }
       if (maxAge < 31536000) {
         results.push(warn(`max-age is ${maxAge}s — recommended minimum is 31536000 (1 year).`));
+        // Scale based on how far off: 0s = bad, 31536000 = fine
+        partialScore -= 0.30 * (1 - Math.min(maxAge / 31536000, 1));
       }
       if (!/includeSubDomains/i.test(value)) {
         results.push(warn('Consider adding includeSubDomains for broader protection.'));
+        partialScore -= 0.15;
       }
       if (!/preload/i.test(value)) {
         results.push(warn('Consider adding the preload flag and submitting to the HSTS preload list.'));
+        partialScore -= 0.10;
       }
-      return results.length ? merge(...results) : ok();
+
+      partialScore = Math.max(0, partialScore);
+      const merged = results.length ? merge(...results) : ok();
+      merged.partialScore = partialScore;
+      return merged;
     },
   },
 
@@ -113,8 +149,9 @@ export const SECURITY_HEADERS = [
     name: 'X-Frame-Options',
     key: 'x-frame-options',
     severity: 'high',
+    maxPoints: 10,
     missingPenalty: 10,
-    misconfiguredPenalty: 5,
+    misconfiguredPenalty: 6,
     description:
       'Prevents the page from being embedded in iframes on other sites, mitigating clickjacking attacks.',
     mdnUrl: 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options',
@@ -135,8 +172,9 @@ export const SECURITY_HEADERS = [
     name: 'X-Content-Type-Options',
     key: 'x-content-type-options',
     severity: 'high',
+    maxPoints: 10,
     missingPenalty: 10,
-    misconfiguredPenalty: 5,
+    misconfiguredPenalty: 6,
     description:
       'Prevents the browser from MIME-sniffing a response away from the declared content-type, reducing drive-by download attacks.',
     mdnUrl: 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options',
@@ -154,8 +192,9 @@ export const SECURITY_HEADERS = [
     name: 'Referrer-Policy',
     key: 'referrer-policy',
     severity: 'medium',
-    missingPenalty: 5,
-    misconfiguredPenalty: 3,
+    maxPoints: 8,
+    missingPenalty: 8,
+    misconfiguredPenalty: 4,
     description:
       'Controls how much referrer information is sent with requests, helping protect user privacy.',
     mdnUrl: 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy',
@@ -191,8 +230,9 @@ export const SECURITY_HEADERS = [
     name: 'Permissions-Policy',
     key: 'permissions-policy',
     severity: 'medium',
-    missingPenalty: 5,
-    misconfiguredPenalty: 3,
+    maxPoints: 7,
+    missingPenalty: 7,
+    misconfiguredPenalty: 4,
     description:
       'Controls which browser features and APIs can be used in the page (camera, microphone, geolocation, etc.).',
     mdnUrl: 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy',
@@ -211,6 +251,7 @@ export const SECURITY_HEADERS = [
     name: 'Cross-Origin-Embedder-Policy',
     key: 'cross-origin-embedder-policy',
     severity: 'low',
+    maxPoints: 5,
     missingPenalty: 5,
     misconfiguredPenalty: 3,
     description:
@@ -232,6 +273,7 @@ export const SECURITY_HEADERS = [
     name: 'Cross-Origin-Opener-Policy',
     key: 'cross-origin-opener-policy',
     severity: 'low',
+    maxPoints: 5,
     missingPenalty: 5,
     misconfiguredPenalty: 3,
     description:
@@ -253,6 +295,7 @@ export const SECURITY_HEADERS = [
     name: 'Cross-Origin-Resource-Policy',
     key: 'cross-origin-resource-policy',
     severity: 'low',
+    maxPoints: 5,
     missingPenalty: 5,
     misconfiguredPenalty: 3,
     description:

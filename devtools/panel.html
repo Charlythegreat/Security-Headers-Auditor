@@ -11,25 +11,39 @@
   <header class="toolbar">
     <div class="toolbar-left">
       <h1 class="toolbar-title">
-        <span class="toolbar-icon">🛡️</span> Security Headers Auditor
+        <span class="toolbar-icon">🛡️</span> <span data-i18n="extensionName">Security Headers Auditor</span>
       </h1>
     </div>
     <div class="toolbar-right">
+      <label class="toggle-label" title="Include sub-resource network requests in scan">
+        <input type="checkbox" id="chk-network-scan" />
+        <span data-i18n="networkScan">Network Scan</span>
+      </label>
       <button id="btn-scan" class="btn btn-primary" title="Scan the current page">
-        <span class="btn-icon">▶</span> Scan Page
+        <span class="btn-icon">▶</span> <span data-i18n="scanPage">Scan Page</span>
       </button>
       <button id="btn-history" class="btn btn-ghost" title="View scan history">
-        <span class="btn-icon">📋</span> History
+        <span class="btn-icon">📋</span> <span data-i18n="history">History</span>
       </button>
       <div class="dropdown" id="export-dropdown">
         <button class="btn btn-ghost" title="Export report">
-          <span class="btn-icon">⬇</span> Export
+          <span class="btn-icon">⬇</span> <span data-i18n="export">Export</span>
         </button>
         <div class="dropdown-menu">
-          <button id="btn-export-json" class="dropdown-item">Export as JSON</button>
-          <button id="btn-export-pdf" class="dropdown-item">Export as PDF</button>
+          <button id="btn-export-json" class="dropdown-item" data-i18n="exportJson">Export as JSON</button>
+          <button id="btn-export-pdf" class="dropdown-item" data-i18n="exportPdf">Export as PDF</button>
         </div>
       </div>
+      <select id="select-lang" class="btn btn-ghost lang-select" title="Language">
+        <option value="en">EN</option>
+        <option value="es">ES</option>
+        <option value="fr">FR</option>
+        <option value="de">DE</option>
+        <option value="ja">JA</option>
+        <option value="zh">ZH</option>
+        <option value="pt">PT</option>
+        <option value="ko">KO</option>
+      </select>
       <button id="btn-theme" class="btn btn-icon-only" title="Toggle light/dark theme">🌗</button>
     </div>
   </header>
@@ -40,22 +54,22 @@
     <!-- Empty state -->
     <section id="empty-state" class="card empty-state">
       <div class="empty-state-icon">🔍</div>
-      <h2>No Scan Results Yet</h2>
-      <p>Click <strong>Scan Page</strong> to audit the security headers of the current page.</p>
+      <h2 data-i18n="emptyTitle">No Scan Results Yet</h2>
+      <p><span data-i18n="emptyDesc">Click</span> <strong data-i18n="scanPage">Scan Page</strong> <span data-i18n="emptyDesc2">to audit the security headers of the current page.</span></p>
     </section>
 
     <!-- Loading spinner -->
     <section id="loading" class="card loading hidden">
       <div class="spinner"></div>
-      <p>Analysing headers…</p>
+      <p data-i18n="analysing">Analysing headers…</p>
     </section>
 
     <!-- Error state -->
     <section id="error-state" class="card error-state hidden">
       <div class="error-icon">⚠️</div>
-      <h2>Scan Failed</h2>
+      <h2 data-i18n="scanFailed">Scan Failed</h2>
       <p id="error-message"></p>
-      <button id="btn-retry" class="btn btn-primary">Retry</button>
+      <button id="btn-retry" class="btn btn-primary" data-i18n="retry">Retry</button>
     </section>
 
     <!-- ── Report ── -->
@@ -77,13 +91,24 @@
         </div>
       </div>
 
+      <!-- Category score breakdown -->
+      <div class="section-title" data-i18n="categoryBreakdown">Score Breakdown by Category</div>
+      <div id="category-scores" class="category-scores card"></div>
+
       <!-- Header breakdown -->
-      <div class="section-title">Header Breakdown</div>
+      <div class="section-title" data-i18n="headerBreakdown">Header Breakdown</div>
       <div id="header-list" class="header-list"></div>
+
+      <!-- Sub-resource network scan results -->
+      <div id="network-section" class="hidden">
+        <div class="section-title" data-i18n="networkRequests">Network Requests (<span id="sub-count">0</span>)</div>
+        <div id="network-summary" class="network-summary card"></div>
+        <div id="network-list" class="network-list"></div>
+      </div>
 
       <!-- Raw headers -->
       <details class="raw-headers card">
-        <summary>Raw Response Headers</summary>
+        <summary data-i18n="rawHeaders">Raw Response Headers</summary>
         <pre id="raw-headers-pre"></pre>
       </details>
 
@@ -92,10 +117,10 @@
     <!-- ── History Panel (overlay) ── -->
     <section id="history-panel" class="history-panel hidden">
       <div class="history-header">
-        <h2>Scan History</h2>
+        <h2 data-i18n="scanHistory">Scan History</h2>
         <div>
-          <button id="btn-compare" class="btn btn-ghost" title="Compare selected">Compare</button>
-          <button id="btn-clear-history" class="btn btn-ghost" title="Clear all history">Clear</button>
+          <button id="btn-compare" class="btn btn-ghost" title="Compare selected" data-i18n="compare">Compare</button>
+          <button id="btn-clear-history" class="btn btn-ghost" title="Clear all history" data-i18n="clear">Clear</button>
           <button id="btn-close-history" class="btn btn-icon-only" title="Close">✕</button>
         </div>
       </div>
@@ -105,7 +130,7 @@
     <!-- ── Compare Panel (overlay) ── -->
     <section id="compare-panel" class="compare-panel hidden">
       <div class="history-header">
-        <h2>Compare Scans</h2>
+        <h2 data-i18n="compareScans">Compare Scans</h2>
         <button id="btn-close-compare" class="btn btn-icon-only" title="Close">✕</button>
       </div>
       <div id="compare-content" class="compare-content"></div>

@@ -87,4 +87,27 @@ export const MSG = {
   CLEAR_HISTORY: 'CLEAR_HISTORY',
   GET_HISTORY: 'GET_HISTORY',
   HISTORY_RESULT: 'HISTORY_RESULT',
+  NETWORK_SCAN_REQUEST: 'NETWORK_SCAN_REQUEST',
+  NETWORK_SCAN_RESULT: 'NETWORK_SCAN_RESULT',
+};
+
+/** Category labels for score breakdown display */
+export const CATEGORY_LABELS = {
+  critical: 'Critical Security',
+  high: 'High Importance',
+  medium: 'Medium Importance',
+  low: 'Additional Hardening',
+};
+
+/** Point allocation per header (must sum to 100) */
+export const POINT_ALLOCATION = {
+  'content-security-policy': 30,
+  'strict-transport-security': 20,
+  'x-frame-options': 10,
+  'x-content-type-options': 10,
+  'referrer-policy': 8,
+  'permissions-policy': 7,
+  'cross-origin-embedder-policy': 5,
+  'cross-origin-opener-policy': 5,
+  'cross-origin-resource-policy': 5,
 };
