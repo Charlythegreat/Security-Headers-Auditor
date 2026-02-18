@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Security Headers Auditor</title>
+  <link rel="stylesheet" href="../assets/styles/panel.css" />
+</head>
+<body>
+  <!-- ───── Toolbar ───── -->
+  <header class="toolbar">
+    <div class="toolbar-left">
+      <h1 class="toolbar-title">
+        <span class="toolbar-icon">🛡️</span> Security Headers Auditor
+      </h1>
+    </div>
+    <div class="toolbar-right">
+      <button id="btn-scan" class="btn btn-primary" title="Scan the current page">
+        <span class="btn-icon">▶</span> Scan Page
+      </button>
+      <button id="btn-history" class="btn btn-ghost" title="View scan history">
+        <span class="btn-icon">📋</span> History
+      </button>
+      <div class="dropdown" id="export-dropdown">
+        <button class="btn btn-ghost" title="Export report">
+          <span class="btn-icon">⬇</span> Export
+        </button>
+        <div class="dropdown-menu">
+          <button id="btn-export-json" class="dropdown-item">Export as JSON</button>
+          <button id="btn-export-pdf" class="dropdown-item">Export as PDF</button>
+        </div>
+      </div>
+      <button id="btn-theme" class="btn btn-icon-only" title="Toggle light/dark theme">🌗</button>
+    </div>
+  </header>
+
+  <!-- ───── Main Content ───── -->
+  <main id="main-content">
+
+    <!-- Empty state -->
+    <section id="empty-state" class="card empty-state">
+      <div class="empty-state-icon">🔍</div>
+      <h2>No Scan Results Yet</h2>
+      <p>Click <strong>Scan Page</strong> to audit the security headers of the current page.</p>
+    </section>
+
+    <!-- Loading spinner -->
+    <section id="loading" class="card loading hidden">
+      <div class="spinner"></div>
+      <p>Analysing headers…</p>
+    </section>
+
+    <!-- Error state -->
+    <section id="error-state" class="card error-state hidden">
+      <div class="error-icon">⚠️</div>
+      <h2>Scan Failed</h2>
+      <p id="error-message"></p>
+      <button id="btn-retry" class="btn btn-primary">Retry</button>
+    </section>
+
+    <!-- ── Report ── -->
+    <section id="report" class="hidden">
+
+      <!-- Score overview -->
+      <div class="score-card card">
+        <div class="score-gauge-container">
+          <svg class="score-gauge" viewBox="0 0 120 120">
+            <circle class="gauge-bg" cx="60" cy="60" r="54" />
+            <circle class="gauge-fill" id="gauge-fill" cx="60" cy="60" r="54" />
+          </svg>
+          <div class="score-value" id="score-value">—</div>
+        </div>
+        <div class="score-details">
+          <span class="grade-badge" id="grade-badge">—</span>
+          <p class="score-url" id="score-url"></p>
+          <p class="score-time" id="score-time"></p>
+        </div>
+      </div>
+
+      <!-- Header breakdown -->
+      <div class="section-title">Header Breakdown</div>
+      <div id="header-list" class="header-list"></div>
+
+      <!-- Raw headers -->
+      <details class="raw-headers card">
+        <summary>Raw Response Headers</summary>
+        <pre id="raw-headers-pre"></pre>
+      </details>
+
+    </section>
+
+    <!-- ── History Panel (overlay) ── -->
+    <section id="history-panel" class="history-panel hidden">
+      <div class="history-header">
+        <h2>Scan History</h2>
+        <div>
+          <button id="btn-compare" class="btn btn-ghost" title="Compare selected">Compare</button>
+          <button id="btn-clear-history" class="btn btn-ghost" title="Clear all history">Clear</button>
+          <button id="btn-close-history" class="btn btn-icon-only" title="Close">✕</button>
+        </div>
+      </div>
+      <div id="history-list" class="history-list"></div>
+    </section>
+
+    <!-- ── Compare Panel (overlay) ── -->
+    <section id="compare-panel" class="compare-panel hidden">
+      <div class="history-header">
+        <h2>Compare Scans</h2>
+        <button id="btn-close-compare" class="btn btn-icon-only" title="Close">✕</button>
+      </div>
+      <div id="compare-content" class="compare-content"></div>
+    </section>
+
+  </main>
+
+  <script src="panel.js" type="module"></script>
+</body>
+</html>

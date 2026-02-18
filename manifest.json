@@ -1,0 +1,51 @@
+{
+  "manifest_version": 3,
+  "name": "Security Headers Auditor",
+  "version": "1.0.0",
+  "description": "Audit HTTP security headers of any webpage. Get a security score, detailed breakdown, and actionable recommendations — right inside Edge DevTools.",
+  "author": "Security Headers Auditor Contributors",
+
+  "minimum_chrome_version": "110",
+
+  "permissions": [
+    "debugger",
+    "tabs",
+    "activeTab",
+    "storage",
+    "webRequest"
+  ],
+
+  "host_permissions": [
+    "<all_urls>"
+  ],
+
+  "background": {
+    "service_worker": "src/background/service-worker.js",
+    "type": "module"
+  },
+
+  "devtools_page": "devtools/devtools.html",
+
+  "action": {
+    "default_icon": {
+      "16": "assets/icons/icon16.png",
+      "32": "assets/icons/icon32.png",
+      "48": "assets/icons/icon48.png",
+      "128": "assets/icons/icon128.png"
+    },
+    "default_title": "Security Headers Auditor"
+  },
+
+  "icons": {
+    "16": "assets/icons/icon16.png",
+    "32": "assets/icons/icon32.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  },
+
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
+
+  "web_accessible_resources": []
+}

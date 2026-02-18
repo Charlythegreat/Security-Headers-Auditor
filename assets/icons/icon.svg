@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0078d4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#005a9e;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Rounded background -->
+  <rect width="128" height="128" rx="20" ry="20" fill="url(#bg)"/>
+  <!-- Shield shape -->
+  <path d="M64 18 L100 34 L100 62 C100 86 82 104 64 112 C46 104 28 86 28 62 L28 34 Z"
+        fill="none" stroke="#fff" stroke-width="4" stroke-linejoin="round"/>
+  <!-- Checkmark -->
+  <path d="M48 64 L58 76 L80 50"
+        fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
