@@ -14,6 +14,7 @@ const FILES_AND_DIRS = [
   'src',
   'devtools',
   'assets',
+  '_locales',
 ];
 
 function clean() {

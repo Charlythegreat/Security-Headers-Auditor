@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "보안 헤더 감사기",
+    "description": "The extension name"
+  },
+  "appDescription": {
+    "message": "모든 웹페이지의 HTTP 보안 헤더를 감사합니다. Edge DevTools에서 직접 보안 점수, 상세 분석 및 실행 가능한 권장사항을 확인하세요.",
+    "description": "The extension description"
+  }
+}

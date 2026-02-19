@@ -92,9 +92,37 @@ function crc32(buf) {
 
 /**
  * Get RGBA color for pixel at (x, y) in a size×size image.
- * Draws a shield with a checkmark on a blue background.
+ * Draws a modern shield icon with a lock symbol on a gradient background.
+ * Uses sub-pixel sampling for anti-aliasing.
  */
 function getPixel(x, y, w, h) {
+  // Anti-alias via 3×3 super-sampling
+  let rSum = 0, gSum = 0, bSum = 0, aSum = 0;
+  const samples = 3;
+  for (let sy = 0; sy < samples; sy++) {
+    for (let sx = 0; sx < samples; sx++) {
+      const px = getPixelRaw(
+        x + (sx + 0.5) / samples,
+        y + (sy + 0.5) / samples,
+        w,
+        h
+      );
+      rSum += px[0];
+      gSum += px[1];
+      bSum += px[2];
+      aSum += px[3];
+    }
+  }
+  const n = samples * samples;
+  return [
+    Math.round(rSum / n),
+    Math.round(gSum / n),
+    Math.round(bSum / n),
+    Math.round(aSum / n),
+  ];
+}
+
+function getPixelRaw(x, y, w, h) {
   const cx = w / 2;
   const cy = h / 2;
 
@@ -108,14 +136,14 @@ function getPixel(x, y, w, h) {
   const inRoundedRect = isInRoundedRect(x, y, margin, margin, w - 2 * margin, h - 2 * margin, radius);
   if (!inRoundedRect) return [0, 0, 0, 0]; // transparent
 
-  // Background gradient: #0078d4 -> #005a9e
+  // Background gradient: #0078d4 -> #004080 (deeper blue)
   const t = (nx + ny) / 2;
   const bgR = Math.round(0 + t * 0);
-  const bgG = Math.round(120 - t * 30);
-  const bgB = Math.round(212 - t * 54);
+  const bgG = Math.round(120 - t * 56);
+  const bgB = Math.round(212 - t * 84);
 
   // Shield outline
-  const shieldScale = 0.65;
+  const shieldScale = 0.62;
   const sx = (nx - 0.5) / shieldScale + 0.5;
   const sy = (ny - 0.42) / shieldScale + 0.42;
 

@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "Security Headers Auditor",
+    "description": "The extension name"
+  },
+  "appDescription": {
+    "message": "Audit HTTP security headers of any webpage. Get a security score, detailed breakdown, and actionable recommendations — right inside Edge DevTools.",
+    "description": "The extension description"
+  }
+}

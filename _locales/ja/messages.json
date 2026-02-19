@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "セキュリティヘッダー監査",
+    "description": "The extension name"
+  },
+  "appDescription": {
+    "message": "任意のウェブページのHTTPセキュリティヘッダーを監査します。セキュリティスコア、詳細な分析、実践的な推奨事項を Edge DevTools 内で直接取得できます。",
+    "description": "The extension description"
+  }
+}

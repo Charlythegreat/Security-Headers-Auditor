@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "安全标头审计器",
+    "description": "The extension name"
+  },
+  "appDescription": {
+    "message": "审计任何网页的HTTP安全标头。在Edge DevTools中直接获取安全评分、详细分析和可操作的建议。",
+    "description": "The extension description"
+  }
+}

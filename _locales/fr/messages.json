@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "Auditeur d'en-têtes de sécurité",
+    "description": "The extension name"
+  },
+  "appDescription": {
+    "message": "Auditez les en-têtes de sécurité HTTP de n'importe quelle page web. Score de sécurité, détail complet et recommandations — directement dans Edge DevTools.",
+    "description": "The extension description"
+  }
+}

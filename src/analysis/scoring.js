@@ -62,7 +62,7 @@ function buildCategoryScores(results) {
     .filter((cat) => buckets[cat])
     .map((cat) => ({
       category: /** @type {import('../types/types').Severity} */ (cat),
-      label: CATEGORY_LABELS[cat] || cat,
+      label: CATEGORY_LABELS[/** @type {import('../types/types').Severity} */ (cat)] || cat,
       earned: buckets[cat].earned,
       max: buckets[cat].max,
       percentage: buckets[cat].max > 0 ? Math.round((buckets[cat].earned / buckets[cat].max) * 100) : 100,
@@ -129,7 +129,7 @@ export function audit(url, rawHeaders, subResources) {
       key: def.key,
       severity: def.severity,
       status,
-      statusIcon: STATUS_ICONS[status],
+      statusIcon: /** @type {import('../types/types').StatusIcon} */ (STATUS_ICONS[status]),
       value,
       maxPoints: def.maxPoints,
       pointsEarned,

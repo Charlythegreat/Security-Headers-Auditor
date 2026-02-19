@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "Sicherheits-Header-Auditor",
+    "description": "The extension name"
+  },
+  "appDescription": {
+    "message": "Prüfen Sie die HTTP-Sicherheitsheader jeder Webseite. Erhalten Sie einen Sicherheitsscore, eine detaillierte Aufschlüsselung und umsetzbare Empfehlungen — direkt in Edge DevTools.",
+    "description": "The extension description"
+  }
+}

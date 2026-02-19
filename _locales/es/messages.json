@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "Auditor de Cabeceras de Seguridad",
+    "description": "The extension name"
+  },
+  "appDescription": {
+    "message": "Audite las cabeceras HTTP de seguridad de cualquier página web. Obtenga una puntuación de seguridad, desglose detallado y recomendaciones prácticas — directamente en DevTools de Edge.",
+    "description": "The extension description"
+  }
+}

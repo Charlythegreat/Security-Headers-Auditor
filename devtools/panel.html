@@ -11,11 +11,11 @@
   <header class="toolbar">
     <div class="toolbar-left">
       <h1 class="toolbar-title">
-        <span class="toolbar-icon">🛡️</span> <span data-i18n="extensionName">Security Headers Auditor</span>
+        <span class="toolbar-icon">🛡️</span> <span data-i18n="appTitle">Security Headers Auditor</span>
       </h1>
     </div>
     <div class="toolbar-right">
-      <label class="toggle-label" title="Include sub-resource network requests in scan">
+      <label class="network-scan-toggle" title="Include sub-resource headers in scan">
         <input type="checkbox" id="chk-network-scan" />
         <span data-i18n="networkScan">Network Scan</span>
       </label>
@@ -34,7 +34,7 @@
           <button id="btn-export-pdf" class="dropdown-item" data-i18n="exportPdf">Export as PDF</button>
         </div>
       </div>
-      <select id="select-lang" class="btn btn-ghost lang-select" title="Language">
+      <select id="lang-select" class="lang-select" title="Language">
         <option value="en">EN</option>
         <option value="es">ES</option>
         <option value="fr">FR</option>
@@ -54,14 +54,14 @@
     <!-- Empty state -->
     <section id="empty-state" class="card empty-state">
       <div class="empty-state-icon">🔍</div>
-      <h2 data-i18n="emptyTitle">No Scan Results Yet</h2>
-      <p><span data-i18n="emptyDesc">Click</span> <strong data-i18n="scanPage">Scan Page</strong> <span data-i18n="emptyDesc2">to audit the security headers of the current page.</span></p>
+      <h2 data-i18n="noResults">No Scan Results Yet</h2>
+      <p><span data-i18n="noResultsHint">Click</span> <strong data-i18n="scanPage">Scan Page</strong> <span data-i18n="noResultsHint2">to audit the security headers of the current page.</span></p>
     </section>
 
     <!-- Loading spinner -->
     <section id="loading" class="card loading hidden">
       <div class="spinner"></div>
-      <p data-i18n="analysing">Analysing headers…</p>
+      <p data-i18n="analyzing">Analysing headers…</p>
     </section>
 
     <!-- Error state -->
@@ -92,18 +92,17 @@
       </div>
 
       <!-- Category score breakdown -->
-      <div class="section-title" data-i18n="categoryBreakdown">Score Breakdown by Category</div>
+      <div class="section-title" data-i18n="categoryBreakdown">Category Breakdown</div>
       <div id="category-scores" class="category-scores card"></div>
 
       <!-- Header breakdown -->
       <div class="section-title" data-i18n="headerBreakdown">Header Breakdown</div>
       <div id="header-list" class="header-list"></div>
 
-      <!-- Sub-resource network scan results -->
-      <div id="network-section" class="hidden">
-        <div class="section-title" data-i18n="networkRequests">Network Requests (<span id="sub-count">0</span>)</div>
-        <div id="network-summary" class="network-summary card"></div>
-        <div id="network-list" class="network-list"></div>
+      <!-- Sub-resource results -->
+      <div id="network-results-section" class="hidden">
+        <div class="section-title" data-i18n="networkResults">Network Sub-Resource Headers</div>
+        <div id="network-results" class="network-results card"></div>
       </div>
 
       <!-- Raw headers -->

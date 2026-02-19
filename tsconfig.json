@@ -12,7 +12,7 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "moduleResolution": "node",
-    "typeRoots": ["./src/types", "./node_modules/@anthropic-ai"]
+    "typeRoots": ["./src/types", "./node_modules/@types", "./node_modules/@anthropic-ai"]
   },
   "include": ["src/**/*", "devtools/**/*"],
   "exclude": ["node_modules", "dist", "build"]

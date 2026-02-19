@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "Auditor de Cabeçalhos de Segurança",
+    "description": "The extension name"
+  },
+  "appDescription": {
+    "message": "Audite os cabeçalhos de segurança HTTP de qualquer página web. Obtenha uma pontuação de segurança, análise detalhada e recomendações — diretamente no Edge DevTools.",
+    "description": "The extension description"
+  }
+}
